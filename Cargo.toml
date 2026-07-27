@@ -1,0 +1,11 @@
+[package]
+name = "smpc"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rand = "0.10.2"
+aes-gcm = "0.10"
+ed25519-dalek = { version = "3", features = ["rand_core"] }
+getrandom = "0.3"
+rand_core = "0.10"
