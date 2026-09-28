@@ -69,12 +69,37 @@ pub fn gf_div(a: u8, b: u8) -> u8 {
     GF256_EXP[log_a + 255 - log_b]
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Share {
     pub x: u8,
+
+    #[serde(with = "hex_vec")]
     pub data: Vec<u8>,
 }
+
+mod hex_vec {
+    use serde::{Deserialize, Deserializer, Serializer};
+    // use serde::{Deserializer, Serializer};
+
+    pub fn serialize<S>(data: &Vec<u8>, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&hex::encode(data))
+    }
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<Vec<u8>, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+
+        hex::decode(s).map_err(serde::de::Error::custom)
+    }
+}
+
 use rand::RngExt;
+use serde::{Deserialize, Serialize};
 
 pub fn split_secret(secret: &[u8], n: u8, k: u8) -> Vec<Share> {
     assert!(k >= 2);
@@ -106,44 +131,6 @@ pub fn split_secret(secret: &[u8], n: u8, k: u8) -> Vec<Share> {
     }
     shares
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 pub fn reconstruct_secret(shares: &[Share]) -> Vec<u8> {
     assert!(!shares.is_empty());

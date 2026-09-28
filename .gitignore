@@ -1,1 +1,6 @@
-/target
+/target/debug
+/target/release
+/target/tmp
+.rustc_info.json
+*.TAG
+src/*.txt

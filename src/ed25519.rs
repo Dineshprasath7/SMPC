@@ -1,8 +1,8 @@
+use crate::shamir_secret_sharing::{reconstruct_secret, split_secret};
 use ed25519_dalek::{Signature, Signer, SigningKey, Verifier, VerifyingKey, ed25519::signature};
 use rand::rngs::SysRng;
 use rand_core::UnwrapErr;
-
-use crate::shamir_secret_sharing::{reconstruct_secret, split_secret};
+use serde::Deserialize;
 
 /// Generates a new Ed25519 keypair.
 ///
