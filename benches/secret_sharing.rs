@@ -1,6 +1,6 @@
 use criterion::{Criterion, black_box, criterion_group, criterion_main};
 
-use smpc::shamir_secret_sharing::{reconstruct_secret, split_secret};
+use smpc::maths::{reconstruct_secret, split_secret};
 
 fn bench_split_secret(c: &mut Criterion) {
     let secret = vec![0u8; 32];

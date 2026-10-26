@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use crate::shamir_secret_sharing::*;
+    use crate::maths::*;
 
     #[test]
     fn exp_log_round_trip() {

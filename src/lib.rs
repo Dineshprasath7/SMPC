@@ -1,6 +1,10 @@
 pub mod aes_gcm;
 pub mod ed25519;
-pub mod shamir_secret_sharing;
+pub mod maths;
+
+pub mod audit;
+pub mod save;
+pub mod shamir;
+
 #[cfg(test)]
 mod test;
-pub mod save;

@@ -1,11 +1,12 @@
 use std::io::{self, Write};
 
 use smpc::{
+    maths::{Share, reconstruct_secret, split_secret},
     save,
-    shamir_secret_sharing::{Share, reconstruct_secret, split_secret},
+    shamir::Smpc,
 };
 
-pub fn split_cli() -> Result<(), Box<dyn std::error::Error>> {
+pub fn split_cli(smpc: &Smpc) -> Result<(), Box<dyn std::error::Error>> {
     println!("========== Shamir Secret Sharing ==========");
     println!("Split a secret into shares.");
     println!();
@@ -41,7 +42,7 @@ pub fn split_cli() -> Result<(), Box<dyn std::error::Error>> {
     println!("Threshold   : {}", k);
     println!();
 
-    let shares = split_secret(&secret, n, k);
+    let shares = smpc.split_secret(&secret, n, k);
 
     save::save_json(&shares, "1.json");
     save::save_yaml(&shares, "1.yaml");
@@ -61,7 +62,7 @@ pub fn split_cli() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-pub fn reconstruct_cli() -> Result<(), Box<dyn std::error::Error>> {
+pub fn reconstruct_cli(smpc: &Smpc) -> Result<(), Box<dyn std::error::Error>> {
     println!("========== Shamir Secret Reconstruction ==========");
     println!();
 
@@ -93,7 +94,7 @@ pub fn reconstruct_cli() -> Result<(), Box<dyn std::error::Error>> {
     println!();
     println!("Reconstructing secret...");
 
-    let secret = reconstruct_secret(&shares);
+    let secret = smpc.reconstruct_secret(&shares);
 
     println!();
     println!("========== Result ==========");
@@ -111,8 +112,6 @@ pub fn reconstruct_cli() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
-
-
 
 fn prompt(message: &str) -> io::Result<String> {
     print!("{message}");
